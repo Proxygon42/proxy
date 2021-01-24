@@ -207,14 +207,17 @@ function drop_inventory_chest()
     for i = 1, 16, 1 do
 
         turtle.select(i)
-        if turtle.getItemDetail(i).name ~= coal_string and turtle.getItemDetail(i).name ~= chest_string then
-            --Wenn das Item keine Kohle und keine Chest ist, wird gedroppt
-            if comming_from == "back" then
-                turtle.drop()
-            elseif comming_from == "up" then
-                turtle.dropUp()                
-            elseif comming_from == "down" then
-                turtle.dropDown()
+        local selected_item = turtle.getItemDetail(i)
+        if selected_item ~= nil then
+            if selected_item.name ~= coal_string and selected_item.name ~= chest_string then
+                --Wenn das Item keine Kohle und keine Chest ist, wird gedroppt
+                if comming_from == "back" then
+                    turtle.drop()
+                elseif comming_from == "up" then
+                    turtle.dropUp()                
+                elseif comming_from == "down" then
+                    turtle.dropDown()
+                end
             end
         end
     end
@@ -241,14 +244,15 @@ end
 
 function turtle_refuel()
     --Fueled + gibt den Fuel Stand mit, wenn es tanken konnte und nil, wenn nicht
-    if select_item(coal_string)[1] ~= nil then
+    local coal_slot = select_item(coal_string)
+    if coal_slot[1] ~= nil then
         --Wenn Kohle gefunden wurde
         local i_checker_fuel = 1
-        while select_item(coal_string)[i_checker_fuel] ~= nil do
+        while coal_slot[i_checker_fuel] ~= nil do
             --Es wird solange das inv geleert, bis maxFuel erreicht wurde oder keine Kohle mehr gefunden wurde
             
             
-            slot_coal = select_item(coal_string)[i_checker_fuel]--Gibt einen Slot von Kohle wieder oder nil, wenn keine Kohle gefunden wurde.
+            slot_coal = coal_slot[i_checker_fuel]--Gibt einen Slot von Kohle wieder oder nil, wenn keine Kohle gefunden wurde.
             coal_amount = turtle.getItemCount(slot_coal)
             if i_checker_fuel == 1 then
                 --Bei dem ersten Durchgang, wird 1 Kohle übrig gelassen, damit immer ein Slot für Kohle freigehalten wird.
