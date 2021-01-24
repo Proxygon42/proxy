@@ -62,10 +62,6 @@ function route_mine()
 
     for i_x = 1 , x_forloop , 1 do
         --Die Breite, welche x ist, bestimmt wie viele Reihen gegangen werden.
-        if i_x ~= 1 then
-            --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
-            x_direction = x_direction * -1
-        end
 
         for i_z = 1 , z_xyz , 1 do
             --Die Tiefe, welche z ist, bestimmt wie weit eine Reihe gegangen wird.
@@ -111,6 +107,10 @@ function route_mine()
             end
             --Da die turtle schon an der Höhe angekommen ist, muss sie bei der nächsten runde in die andere Richtung, was Höhe angeht:
             y_direction = y_direction * -1
+        end
+        if i_x ~= 1 and  then
+            --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
+            x_direction = x_direction * -1
         end
     end
 end
