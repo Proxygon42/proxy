@@ -65,9 +65,11 @@ function route_mine()
 
         for i_z = 1 , z_xyz , 1 do
             --Die Tiefe, welche z ist, bestimmt wie weit eine Reihe gegangen wird.
-            if i_z == 1 and i_x ~= 1 then
-                --Erste Spalte der Reihe, welche nicht die erste ist, benötigt eine weitere Drehung, weil sich gerade erst in die Reihe von der Seite bewegt worden ist.
-                turtle_turn(x_direction)
+            if i_x ~= 1 then
+                if i_z == 1 or i_z == 2 then
+                    --Erste Spalte der Reihe, welche nicht die erste ist, benötigt eine weitere Drehung, weil sich gerade erst in die Reihe von der Seite bewegt worden ist.
+                    turtle_turn(x_direction)
+                end
             end
 
             if y_xyz < 0 then
@@ -106,10 +108,11 @@ function route_mine()
                 inventory_space()
             end
         end
-        if i_x ~= x_xyz then
-            --Es wird sich in eine Richtung gedreht, damit die nächste Reihe gestertet werden kann.
-            turtle_turn(x_direction)
-        end
+        --TODO löschen?:
+        --if i_x ~= x_xyz then
+            --Es wird sich in eine Richtung gedreht, damit die nächste Reihe gestartet werden kann.
+            --turtle_turn(x_direction)
+        --end
     end
 end
 
@@ -135,7 +138,6 @@ function select_item(item)
             
         end
     end
-    print(table.concat(slot_table, ", "))
     return slot_table
 end
 
