@@ -228,7 +228,7 @@ function checker_fuel()
         --Die function turtle_refuel() wird aufgerufen, wodurch refueled wird, aber im Falle fehlender Kohle nil ausgegeben wird:
         if turtle_refuel() == nil then
             --Wenn keine Kohle gefunden wurde
-            print("Keine Kohle gefunden. Bitte mit Kohle befüllen.")
+            print("Nicht genug Kohle gefunden. Bitte befüllen.")
             print("Drücken Sie ENTER, wenn sie Kohle eingeführt haben.")
             read()
         else
@@ -239,6 +239,7 @@ function checker_fuel()
 end
 
 function turtle_refuel()
+    --Fueled + gibt den Fuel Stand mit, wenn es tanken konnte und nil, wenn nicht
     if select_item(coal_string)[1] ~= nil then
         --Wenn Kohle gefunden wurde
         local i_checker_fuel = 1
@@ -264,7 +265,7 @@ function turtle_refuel()
             --Zähler um zu wissen, ob es der erste Durchgang ist:
             i_checker_fuel = i_checker_fuel + 1
         end
-
+        return turtle.getFuelLevel()
     else
         return nil
     end
