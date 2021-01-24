@@ -85,7 +85,7 @@ function route_mine()
 
                 if i_y == 1 then
                     --Erster Durchgang wird gerade aus gegangen:
-                    
+
                     --Gravel-Schutz Script:
                     if turtle.forward() == false then
                         repeat
@@ -98,13 +98,23 @@ function route_mine()
                     --Es wird hoch oder runter gegangen
                     if y_direction == 1 then
                         --Hoch:
-                        turtle.digUp()
-                        turtle.up()
+                        --Gravel-Schutz Script:
+                        if turtle.up() == false then
+                            repeat
+                            turtle.digUp()
+                            sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                            until turtle.up() == true
+                        end
                         comming_from = "down"
                     elseif y_direction == -1 then
                         --Runter:
-                        turtle.digDown()
-                        turtle.down()
+                        --Gravel-Schutz Script:
+                        if turtle.down() == false then
+                            repeat
+                            turtle.digDown()
+                            sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                            until turtle.down() == true
+                        end
                         comming_from = "up"
                     end
                 end
@@ -164,6 +174,8 @@ function checker_empty_slots()
         end
     end
     return free_slots
+
+
 end
 
 
