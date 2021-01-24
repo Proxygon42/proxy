@@ -34,55 +34,7 @@ function dialog_einzelne_xyz_eingabe(xyz_string)
     return xyz
 end
 
----FUELING:---
-function checker_fuel()
-    --Dieser Code bezieht sich auf Kohle Energie
-    while turtle.getFuelLevel() <= minFuelAmount do
-        --Solange minFuelAmount nicht übertroffen wurde, wird diese Schleife wiederholt.
-        
-        --Die function turtle_refuel() wird aufgerufen, wodurch refueled wird, aber im Falle fehlender Kohle nil ausgegeben wird:
-        if turtle_refuel() == nil then
-            --Wenn keine Kohle gefunden wurde
-            print("Keine Kohle gefunden. Bitte mit Kohle befüllen.")
-            print("Drücken Sie ENTER, wenn sie Kohle eingeführt haben.")
-            read()
-        else
-            --Gefueled
-            print("Turtle goes brrr")
-        end
-    end
-end
 
-function turtle_refuel()
-    if select_item(coal_string)[1] ~= nil then
-        --Wenn Kohle gefunden wurde
-        local i_checker_fuel = 1
-        while select_item(coal_string)[i_checker_fuel] ~= nil do
-            --Es wird solange das inv geleert, bis maxFuel erreicht wurde oder keine Kohle mehr gefunden wurde
-            
-            
-            slot_coal = select_item(coal_string)[i_checker_fuel]--Gibt einen Slot von Kohle wieder oder nil, wenn keine Kohle gefunden wurde.
-            coal_amount = turtle.getItemCount(slot_coal)
-            if i_checker_fuel == 1 then
-                --Bei dem ersten Durchgang, wird 1 Kohle übrig gelassen, damit immer ein Slot für Kohle freigehalten wird.
-                coal_amount = coal_amount - 1
-            end
-            -- Max Anzahl an Items beachten, um nicht mehr als max möglich zu fuelen:
-            maxFuel_items = math.floor((maxFuel-turtle.getFuelLevel())/fuel_value)
-            if coal_amount > maxFuel_items then
-                coal_amount = maxFuel_items
-            end
-
-            --Refuel:
-            turtle.refuel(coal_amount)
-            --Zähler um zu wissen, ob es der erste Durchgang ist:
-            i_checker_fuel = i_checker_fuel + 1
-        end
-
-    else
-        return nil
-    end
-end
 
 ---MINING/MOVING:---
 function route_mine()
@@ -267,7 +219,58 @@ function drop_inventory_chest()
     end
 end
 
---Start:
+---FUELING:---
+function checker_fuel()
+    --Dieser Code bezieht sich auf Kohle Energie
+    while turtle.getFuelLevel() <= minFuelAmount do
+        --Solange minFuelAmount nicht übertroffen wurde, wird diese Schleife wiederholt.
+        
+        --Die function turtle_refuel() wird aufgerufen, wodurch refueled wird, aber im Falle fehlender Kohle nil ausgegeben wird:
+        if turtle_refuel() == nil then
+            --Wenn keine Kohle gefunden wurde
+            print("Keine Kohle gefunden. Bitte mit Kohle befüllen.")
+            print("Drücken Sie ENTER, wenn sie Kohle eingeführt haben.")
+            read()
+        else
+            --Gefueled
+            print("Turtle goes brrr")
+        end
+    end
+end
+
+function turtle_refuel()
+    if select_item(coal_string)[1] ~= nil then
+        --Wenn Kohle gefunden wurde
+        local i_checker_fuel = 1
+        while select_item(coal_string)[i_checker_fuel] ~= nil do
+            --Es wird solange das inv geleert, bis maxFuel erreicht wurde oder keine Kohle mehr gefunden wurde
+            
+            
+            slot_coal = select_item(coal_string)[i_checker_fuel]--Gibt einen Slot von Kohle wieder oder nil, wenn keine Kohle gefunden wurde.
+            coal_amount = turtle.getItemCount(slot_coal)
+            if i_checker_fuel == 1 then
+                --Bei dem ersten Durchgang, wird 1 Kohle übrig gelassen, damit immer ein Slot für Kohle freigehalten wird.
+                coal_amount = coal_amount - 1
+            end
+            -- Max Anzahl an Items beachten, um nicht mehr als max möglich zu fuelen:
+            maxFuel_items = math.floor((maxFuel-turtle.getFuelLevel())/fuel_value)
+            if coal_amount > maxFuel_items then
+                coal_amount = maxFuel_items
+            end
+
+            --Refuel:
+            turtle.select(slot_coal)
+            turtle.refuel(coal_amount)
+            --Zähler um zu wissen, ob es der erste Durchgang ist:
+            i_checker_fuel = i_checker_fuel + 1
+        end
+
+    else
+        return nil
+    end
+end
+
+---!!!Start:!!!---
 input_dialog()
 set_parameter()
 route_mine()
