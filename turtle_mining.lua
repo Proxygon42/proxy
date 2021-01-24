@@ -61,7 +61,8 @@ function checker_fuel()
 
                 --Refuel:
                 turtle.refuel(coal_amount)
-            end            
+            end
+
         else
             --Wenn keine Kohle gefunden wurde
             print("Keine Kohle gefunden. Bitte mit Kohle befüllen.")
@@ -70,6 +71,8 @@ function checker_fuel()
         end
         
     end
+    --Gefueled
+    print("Turtle goes brrr")
 end
 function select_coal()
 	--sucht und selected kohle
@@ -181,4 +184,5 @@ end
 --Start:
 input_dialog()
 set_parameter()
---checker_fuel()--muss an anderen stellen noch eingeführt werden
+route_mine()
+print("Ich habe getan!")
