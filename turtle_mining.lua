@@ -184,19 +184,19 @@ function chest_place()
     if comming_from == "back" then
         turtle.turnLeft()
         turtle.turnLeft()
-        turtle.place()
+        --turtle.place()
         drop_inventory_chest()
         turtle.dig()
         turtle_turnRight()
-        turtle_turnRight()
+        --turtle_turnRight()
     elseif comming_from == "up" then
         turtle.placeUp()
         drop_inventory_chest()
-        turtle.digUp()
+        --turtle.digUp()
     elseif comming_from == "down" then
         turtle.placeDown()
         drop_inventory_chest()
-        turtle.digDown()
+        --turtle.digDown()
     end
 end
 
