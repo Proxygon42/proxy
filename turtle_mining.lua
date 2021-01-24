@@ -85,8 +85,14 @@ function route_mine()
 
                 if i_y == 1 then
                     --Erster Durchgang wird gerade aus gegangen:
-                    turtle.dig()
-                    turtle.forward()
+                    
+                    --Gravel-Schutz Script:
+                    if turtle.forward() == false then
+                        repeat
+                        turtle.dig()
+                        sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                        until turtle.forward() == true
+                    end
                     comming_from = "back"
                 else
                     --Es wird hoch oder runter gegangen
