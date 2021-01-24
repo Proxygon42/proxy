@@ -108,7 +108,7 @@ function route_mine()
             --Da die turtle schon an der Höhe angekommen ist, muss sie bei der nächsten runde in die andere Richtung, was Höhe angeht:
             y_direction = y_direction * -1
         end
-        if i_x ~= 1 and  then
+        if i_x ~= 1 then
             --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
             x_direction = x_direction * -1
         end
