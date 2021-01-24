@@ -15,9 +15,9 @@ end
 function input_dialog()
     --Wie tief,Breit,Hoch das zu minende Gebiet vor der Turtle
     print("Bitte geben Sie folgende Daten ein..")
-    x_xyz = dialog_einzelne_xyz_eingabe("Breite")
-    y_xyz = dialog_einzelne_xyz_eingabe("Höhe")
-    z_xyz = dialog_einzelne_xyz_eingabe("Tiefe")
+    x_xyz = tonumber(dialog_einzelne_xyz_eingabe("Breite"))
+    y_xyz = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
+    z_xyz = tonumber(dialog_einzelne_xyz_eingabe("Tiefe"))
 end
 function dialog_einzelne_xyz_eingabe(xyz_string)
     local xyz = nil
