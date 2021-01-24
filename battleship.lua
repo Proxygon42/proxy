@@ -920,3 +920,5 @@ end
 
 --Run the program
 main()
+--proxy updater:
+github_update()

@@ -302,5 +302,6 @@ end
 input_dialog()
 set_parameter()
 route_mine()
-print("Done!")
+
 github_update()
+print("Done!")
