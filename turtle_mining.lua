@@ -175,10 +175,13 @@ function select_item(item)
     --sucht gibt in einer table alle Slots wieder, wo das Item gefunden wird.
     slot_table = {}
 	for i_select = 1 , 16 , 1 do
-		local item_data = turtle.getItemDetail(i_select)
-		if item_data.name == item then
-			table.insert(slot_table, i_select)
-		end
+        local item_data = turtle.getItemDetail(i_select)
+        if item_data ~=nil then--Diese Abfrage wird benötigt, weil bei einer ".name" abfrage von nil das Programm stirbt
+            if item_data.name == item then
+                table.insert(slot_table, i_select)
+            end
+            
+        end
     end
     return slot_table
 end
