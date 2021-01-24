@@ -294,8 +294,15 @@ function turtle_refuel()
     end
 end
 
+function github_update()
+    shell.run("github Proxygon42 cc_codes")
+    shell.run("y")
+    print("Turtle ist auf dem neusten Stand.")
+end
+
 ---!!!Start:!!!---
 input_dialog()
 set_parameter()
 route_mine()
-print("Ich habe getan!")
+print("Done!")
+github_update()
