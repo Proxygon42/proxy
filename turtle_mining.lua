@@ -251,21 +251,32 @@ function drop_inventory_chest()
         if turtle.getItemDetail(i).name ~= coal_string and turtle.getItemDetail(i).name ~= chest_string then
                 --Prüfung, ob eine Chest bereit steht
             if comming_from == "back" then
-                if turtle.inspect().name ~= chest_string then
-                    drop_inventory_chest_error(i)
+                inspect_name = turtle.inspect().name
+                if inspect_name ~= chest_string then
+                    if inspect_name == false then
+                        --Kein Block zu inspecten, deswegen muss eine neue chest geplaced werden
+                        turtle.select(select_item(chest_string)[1])
+                        turtle.place()
+                        turtle.select(i)
+                    end
+                    drop_inventory_chest_error()
                 end
             elseif comming_from == "up" then
-                if turtle.inspectUp().name ~= chest_string then
-                    drop_inventory_chest_error(i)
+                inspect_name = turtle.inspectUp().name
+                if inspect_name ~= chest_string then
+                    drop_inventory_chest_error()
                 end
             elseif comming_from == "down" then
-                if turtle.inspectDown().name ~= chest_string then
-                    drop_inventory_chest_error(i)
+                inspect_name = turtle.inspectDown().name
+                if inspect_name ~= chest_string then
+
+                    drop_inventory_chest_error()
                 end
             end
 
             if turtle.drop() == false then
-                drop_inventory_chest_error(i)
+                print("Das Inventar der platzierten Chest ist voll.")
+                print("")
             end
         end
 
@@ -276,13 +287,14 @@ function drop_inventory_chest()
     end
 end
 
-function drop_inventory_chest_error(slot)
-    if checker_empty_slots()[2] == nil then
-        local count_chests = turtle.getItemCount(select_item(chest_string))
-        if count_chests == 64 or count_chests == 0 then
+function drop_inventory_chest_error()
+    --TODO das hier für ender chest vielleicht wieder einprogrammieren und auf ZWEI free slots, statt nur einem überprüfen:
+    if checker_empty_slots()[1] == nil then
+        --local count_chests = turtle.getItemCount(select_item(chest_string))
+        --if count_chests == 64 or count_chests == 0 then
             --Wenn nicht mindestens 1 Slot frei ist UND im Inventar in keinem vielleicht vorhandenen Chest-Stack noch Platz frei ist:
             
-        end
+        --end
 
     end
 end
