@@ -90,8 +90,9 @@ function route_mine()
                     --Gravel-Schutz Script:
                     if turtle.forward() == false then
                         repeat
-                        turtle.dig()
-                        sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                            turtle.attack()
+                            turtle.dig()
+                            sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                         until turtle.forward() == true
                     end
                     comming_from = "back"
@@ -102,8 +103,9 @@ function route_mine()
                         --Gravel-Schutz Script:
                         if turtle.up() == false then
                             repeat
-                            turtle.digUp()
-                            sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                                turtle.attackUp()
+                                turtle.digUp()
+                                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.up() == true
                         end
                         comming_from = "down"
@@ -112,8 +114,9 @@ function route_mine()
                         --Gravel-Schutz Script:
                         if turtle.down() == false then
                             repeat
-                            turtle.digDown()
-                            sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                                turtle.attackDown()
+                                turtle.digDown()
+                                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.down() == true
                         end
                         comming_from = "up"
