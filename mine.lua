@@ -5,7 +5,8 @@ function set_parameter()
     fuel_value = 80--Kohle Value
     maxFuel = turtle.getFuelLimit()--20.000 Bei normalen Turtles
     height = 0
-	minFuelAmount = 200
+    minFuelAmount = 200
+    maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
     chest_string = "minecraft:chest"--TODO ender chest einrichten
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
@@ -219,8 +220,11 @@ function chest_place()
 end
 
 function drop_inventory_chest()
-    --Es wird zunächst alle Mögliche Kohle bis auf 1 zum refuelen verwendet:
-    turtle_refuel()
+    --Es wird zunächst alle Mögliche Kohle bis auf 1 zum refuelen verwendet, wenn die Turtle nicht schon wirklich genug fuel hat:
+    if turtle.getFuelLevel() < maxMinFuelAmount then
+        turtle_refuel()
+    end
+
 
     for i = 1, 16, 1 do
 
