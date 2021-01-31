@@ -8,7 +8,8 @@ function set_parameter()
     minFuelAmount = 200
     maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
-    chest_string = "minecraft:chest"--TODO ender chest einrichten
+    chest_string = "minecraft:chest"
+    enderchest_string = "minecraft:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
 end
 
@@ -33,6 +34,7 @@ function dialog_einzelne_xyz_eingabe(xyz_string)
         end
     end
     return xyz
+    
 end
 
 
@@ -179,15 +181,14 @@ function checker_empty_slots()
     end
     return free_slots
 
-
 end
 
 
 
 function chest_place()
-    --TODO für enderchest anpassen + print anpassen
     --Wenn keine Chest im Inventory ist, wird geprintet "Bitte entleeren sie das Inventar" oder so.
-    local selector_chest = select_item(chest_string)[1]
+
+    local selector_chest = choose_chest()
     while selector_chest == nil do
         print("Das Inventar der turtle ist voll.")
         print("Bitte entleeren sie das Inventar oder geben Sie eine Chest dem Inventar hinzu.")
@@ -197,7 +198,7 @@ function chest_place()
             --Es wurde vom User ein Slot frei geräumt
             return
         end
-        selector_chest = select_item(chest_string)[1]
+        selector_chest = choose_chest()
 
     end
     --Selects the Chest:
@@ -206,22 +207,56 @@ function chest_place()
     if comming_from == "back" then
         turtle.turnLeft()
         turtle.turnLeft()
+        if turtle.place() == false then
+            repeat
+                turtle.attack()
+                turtle.dig()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.place() == true
+        end
         turtle.place()
         drop_inventory_chest()
-        --turtle.dig()
+        
+        if chest == enderchest_string then
+            --If Enderchest, take it with you
+            turtle.dig()
+        end
+
         turtle.turnRight()
         turtle.turnRight()
     elseif comming_from == "up" then
-        turtle.placeUp()
-        drop_inventory_chest()
-        --turtle.digUp()
-    elseif comming_from == "down" then
-        turtle.placeDown()
-        drop_inventory_chest()
-        --turtle.digDown()
-    end
-end
+        if turtle.placeUp() == false then
+            repeat
+                turtle.attackUp()
+                turtle.digUp()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.placeUp() == true
+        end
 
+        if chest == enderchest_string then
+            --If Enderchest, take it with you
+           turtle.digUp()
+        end
+
+    elseif comming_from == "down" then
+        if turtle.placeDown() == false then
+            repeat
+                turtle.attackDown()
+                turtle.digDown()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.placeDown() == true
+        end
+        drop_inventory_chest()
+
+        if chest == enderchest_string then
+            --If Enderchest, take it with you
+            turtle.digDown()
+        end
+
+    end
+
+    
+end
 function drop_inventory_chest()
     --Es wird zunächst alle Mögliche Kohle bis auf 1 zum refuelen verwendet, wenn die Turtle nicht schon wirklich genug fuel hat:
     if turtle.getFuelLevel() < maxMinFuelAmount then
@@ -246,6 +281,20 @@ function drop_inventory_chest()
             end
         end
     end
+end
+function choose_chest()
+    --If enderchest vorhanden
+    local select_chest = select_item(enderchest_string)[1]
+    if select_chest ~= nil then
+        chest = enderchest_string--Parameter
+        return select_chest
+    end
+    --Else search for normal chest
+        chest = chest_string--Parameter
+
+    select_chest = select_item(chest_string)[1]
+    return select_chest
+
 end
 
 ---FUELING:---
@@ -306,9 +355,8 @@ function github_update()
 end
 
 ---!!!Start:!!!---
+github_update()
 input_dialog()
 set_parameter()
 route_mine()
-
-github_update()
 print("Done!")
