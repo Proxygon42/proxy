@@ -150,27 +150,25 @@ function route_mine()
 end
 
 function counter_cobblestone(direction_string)
+    local inspect_block = ""
     if direction_string == "forward" then
-        block_exists , inspect_block = turtle.inspect()
+        inspect_block = turtle.inspect().name
     elseif direction_string == "up" then
-        block_exists , inspect_block = turtle.inspectUp()
+        inspect_block = turtle.inspectUp().name
     elseif direction_string == "down" then
-        block_exists , inspect_block = turtle.inspectDown()
+        inspect_block = turtle.inspectDown().name
     end
 
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block ~= nil then
-        local block_name = inspect_block.name
-        if block_name == cobblestone_string then
-            inventar_counter_cobblestone = inventar_counter_cobblestone + 1
+    if inspect_block == cobblestone_string then
+        inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
-            if inventar_counter_cobblestone >= maxCobblestone then
-                --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
-                for i_cobble_slot = 1, 16, 1 do
-                    turtle.select(i_cobble_slot)
-                    if turtle.getItemDetail().name == cobblestone_string then
-                        turtle.drop()
-                    end
+        if inventar_counter_cobblestone >= maxCobblestone then
+            --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
+            for i_cobble_slot = 1, 16, 1 do
+                turtle.select(i_cobble_slot)
+                if turtle.getItemDetail().name == cobblestone_string then
+                    turtle.drop()
                 end
             end
         end
