@@ -97,7 +97,7 @@ function route_mine()
                         repeat
                             turtle.attack()
                             if turtle.inspect() == true then
-                                counter_cobblestone(turtle.inspect())
+                                counter_cobblestone()
                                 turtle.dig()
                             end
                             sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -113,7 +113,7 @@ function route_mine()
                             repeat
                                 turtle.attackUp()
                                 if turtle.inspect() == true then
-                                    counter_cobblestone(turtle.inspect())
+                                    counter_cobblestone()
                                     turtle.digUp()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -127,7 +127,7 @@ function route_mine()
                             repeat
                                 turtle.attackDown()
                                 if turtle.inspect() == true then
-                                    counter_cobblestone(turtle.inspect())
+                                    counter_cobblestone()
                                     turtle.digDown()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -149,9 +149,10 @@ function route_mine()
     end
 end
 
-function counter_cobblestone(block)
+function counter_cobblestone()
+    local inspect_block = turtle.inspect()
     --Zählt wie viel cobble abgebaut wird
-    if block.name == cobblestone_string then
+    if inspect_block.name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
