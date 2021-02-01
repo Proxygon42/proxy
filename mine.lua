@@ -159,8 +159,8 @@ function counter_cobblestone(direction_string)
     end
 
     --Zählt wie viel cobble abgebaut wird
-    local block_name = inspect_block.name
-    if block_name ~= nil then
+    if inspect_block.name ~= nil then
+        local block_name = inspect_block.name
         if block_name == cobblestone_string then
             inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
