@@ -157,8 +157,10 @@ function counter_cobblestone(direction_string)
     elseif direction_string == "down" then
         local block_exists , inspect_block = turtle.inspectDown()
     end
+
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block.name == cobblestone_string then
+    local block_name = inspect_block.name
+    if block_name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
