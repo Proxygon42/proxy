@@ -97,7 +97,7 @@ function route_mine()
                         repeat
                             turtle.attack()
                             if turtle.detect() == true then
-                                counter_cobblestone()
+                                counter_cobblestone("forward")
                                 turtle.dig()
                             end
                             sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -113,7 +113,7 @@ function route_mine()
                             repeat
                                 turtle.attackUp()
                                 if turtle.detectUp() == true then
-                                    counter_cobblestone()
+                                    counter_cobblestone("up")
                                     turtle.digUp()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -127,7 +127,7 @@ function route_mine()
                             repeat
                                 turtle.attackDown()
                                 if turtle.detectDown() == true then
-                                    counter_cobblestone()
+                                    counter_cobblestone("down")
                                     turtle.digDown()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -149,8 +149,14 @@ function route_mine()
     end
 end
 
-function counter_cobblestone()
-    local block_exists , inspect_block = turtle.inspect()
+function counter_cobblestone(direction_string)
+    if direction_string == "forward" then
+        local block_exists , inspect_block = turtle.inspect()
+    elseif direction_string == "up" then
+        local block_exists , inspect_block = turtle.inspectUp()
+    elseif direction_string == "down" then
+        local block_exists , inspect_block = turtle.inspectDown()
+    end
     --Zählt wie viel cobble abgebaut wird
     if inspect_block.name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
