@@ -151,16 +151,17 @@ end
 
 function counter_cobblestone(direction_string)
     local inspect_block = ""
+    local block_exists = nil
     if direction_string == "forward" then
-        inspect_block = turtle.inspect().name
+        block_exists, inspect_block = turtle.inspect()
     elseif direction_string == "up" then
-        inspect_block = turtle.inspectUp().name
+        block_exists, inspect_block = turtle.inspectUp()
     elseif direction_string == "down" then
-        inspect_block = turtle.inspectDown().name
+        block_exists, inspect_block = turtle.inspectDown()
     end
 
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block == cobblestone_string then
+    if inspect_block.name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
