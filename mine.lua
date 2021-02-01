@@ -96,7 +96,7 @@ function route_mine()
                     if turtle.forward() == false then
                         repeat
                             turtle.attack()
-                            if turtle.inspect() == true then
+                            if turtle.detect() == true then
                                 counter_cobblestone()
                                 turtle.dig()
                             end
@@ -112,7 +112,7 @@ function route_mine()
                         if turtle.up() == false then
                             repeat
                                 turtle.attackUp()
-                                if turtle.inspect() == true then
+                                if turtle.detectUp() == true then
                                     counter_cobblestone()
                                     turtle.digUp()
                                 end
@@ -126,7 +126,7 @@ function route_mine()
                         if turtle.down() == false then
                             repeat
                                 turtle.attackDown()
-                                if turtle.inspect() == true then
+                                if turtle.detectDown() == true then
                                     counter_cobblestone()
                                     turtle.digDown()
                                 end
@@ -150,7 +150,7 @@ function route_mine()
 end
 
 function counter_cobblestone()
-    local inspect_block = turtle.inspect()
+    local block_exists , inspect_block = turtle.inspect()
     --Zählt wie viel cobble abgebaut wird
     if inspect_block.name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
