@@ -11,6 +11,9 @@ function set_parameter()
     chest_string = "minecraft:chest"
     enderchest_string = "minecraft:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
+    cobblestone_string = "minecraft:cobblestone"
+    maxCobblestone = 64--Frei Konfigurierbar
+    inventar_counter_cobblestone = 0
 end
 
 ---DIALOG:---
@@ -93,7 +96,10 @@ function route_mine()
                     if turtle.forward() == false then
                         repeat
                             turtle.attack()
-                            turtle.dig()
+                            if turtle.inspect() == true then
+                                counter_cobblestone(turtle.inspect())
+                                turtle.dig()
+                            end
                             sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                         until turtle.forward() == true
                     end
@@ -106,7 +112,10 @@ function route_mine()
                         if turtle.up() == false then
                             repeat
                                 turtle.attackUp()
-                                turtle.digUp()
+                                if turtle.inspect() == true then
+                                    counter_cobblestone(turtle.inspect())
+                                    turtle.digUp()
+                                end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.up() == true
                         end
@@ -117,7 +126,10 @@ function route_mine()
                         if turtle.down() == false then
                             repeat
                                 turtle.attackDown()
-                                turtle.digDown()
+                                if turtle.inspect() == true then
+                                    counter_cobblestone(turtle.inspect())
+                                    turtle.digDown()
+                                end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.down() == true
                         end
@@ -133,6 +145,23 @@ function route_mine()
         if i_x ~= 1 then
             --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
             x_direction = x_direction * -1
+        end
+    end
+end
+
+function counter_cobblestone(block)
+    --Zählt wie viel cobble abgebaut wird
+    if block.name == cobblestone_string then
+        inventar_counter_cobblestone = inventar_counter_cobblestone + 1
+
+        if inventar_counter_cobblestone >= maxCobblestone then
+            --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
+            for i_cobble_slot = 1, 16, 1 do
+                turtle.select(i_cobble_slot)
+                if turtle.getItemDetail().name == cobblestone_string then
+                    turtle.drop()
+                end
+            end
         end
     end
 end
