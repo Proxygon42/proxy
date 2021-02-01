@@ -2,42 +2,37 @@
 
 ---PARAMETER:---
 function set_parameter()
+    --TODO x_start_coordination, y_start_coordination, z_start_coordination, weiteres
+    --TODO y_loop_start->bildet sich aus y_start_coordination, aber in relation zu wie weit in y_direction schon gegraben wurde
+    --TODO z_loop_start->bildet sich aus z_start_coordination, aber in relation zu wie weit in z_direction schon gegraben wurde
     fuel_value = 80--Kohle Value
     maxFuel = turtle.getFuelLimit()--20.000 Bei normalen Turtles
     height = 0
     minFuelAmount = 200
     maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
-    chest_string = "minecraft:chest"
+    chest_string = "minecraft:chest"--TODO ender chest einrichten
     enderchest_string = "minecraft:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
-    cobblestone_string = "minecraft:cobblestone"
-    maxCobblestone = 64--Frei Konfigurierbar
-    inventar_counter_cobblestone = 0
+    z_xyz = 16--Default arbeitet die turtle 16 Blöcke Tiefe ab
+    y_deep_dark_farming_plane = 58--von Höhe 4 bis Höhe 61 kann gefarmt werden
 end
 
 ---DIALOG:---
 function input_dialog()
     --Wie tief,Breit,Hoch das zu minende Gebiet vor der Turtle
-    print("Bitte geben Sie folgende Daten ein..")
-    x_xyz = tonumber(dialog_einzelne_xyz_eingabe("Breite"))
-    y_xyz = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
-    z_xyz = tonumber(dialog_einzelne_xyz_eingabe("Tiefe"))
-end
-function dialog_einzelne_xyz_eingabe(xyz_string)
-    local xyz = nil
-    while tonumber(xyz) == nil or tonumber(xyz) == 0 do
-        write(xyz_string..":")
-        xyz = read()
-        if tonumber(xyz) == 0 then
-            print("Der Wert darf nicht null sein")
-        end
-        if tonumber(xyz) == nil then
-            print("Bitte geben Sie die Daten in Zahlenformat ein.")
-        end
+    local dialog_read = ""
+    while dialog_read ~= "y" do
+        print("Ready to lose me?(y/n)")
+        dialog_read = read()
     end
-    return xyz
-    
+    write("I will miss you")
+    sleep(0.5)
+    write(".")
+    sleep(1)
+    write(".")
+    sleep(1)
+    write(".")
 end
 
 
@@ -66,24 +61,15 @@ function route_mine()
         x_direction = 1
     end
 
-    for i_x = 1 , x_forloop , 1 do
-        --Die Breite, welche x ist, bestimmt wie viele Reihen gegangen werden.
+    while true do
+        --Unendlich Reihen
 
-        for i_z = 1 , z_xyz , 1 do
+        for i_z = z_loop_start , z_xyz , 1 do
             --Die Tiefe, welche z ist, bestimmt wie weit eine Reihe gegangen wird.
-            if i_x ~= 1 then
-                if i_z == 1 or i_z == 2 then
-                    --Erste Spalte der Reihe, welche nicht die erste ist, benötigt eine weitere Drehung, weil sich gerade erst in die Reihe von der Seite bewegt worden ist.
-                    turtle_turn(x_direction)
-                end
-            end
+            
+            turtle_turn(i_z)--Checkt ob ein turn benötigt wird und führt diesen aus
 
-            if y_xyz < 0 then
-                y_forloop = math.abs(y_xyz) + 1
-            else
-                y_forloop = y_xyz
-            end
-            for i_y = 1 , y_forloop , 1 do
+            for i_y = y_loop_start , y_deep_dark_farming_plane , 1 do
                 --Die Höhe, welche y ist, bestimmt wie hoch oder tief in jedem Feld gegangen wird.
                 
                 --Bevor eine Bewegung gemacht wird, wird überprüft ob mehr Fuel als der minFuelAmount gegeben ist.
@@ -96,10 +82,7 @@ function route_mine()
                     if turtle.forward() == false then
                         repeat
                             turtle.attack()
-                            if turtle.detect() == true then
-                                counter_cobblestone("forward")
-                                turtle.dig()
-                            end
+                            turtle.dig()
                             sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                         until turtle.forward() == true
                     end
@@ -113,7 +96,7 @@ function route_mine()
                             repeat
                                 turtle.attackUp()
                                 if turtle.detectUp() == true then
-                                    counter_cobblestone("up")
+                                    counter_cobblestone()
                                     turtle.digUp()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -127,7 +110,7 @@ function route_mine()
                             repeat
                                 turtle.attackDown()
                                 if turtle.detectDown() == true then
-                                    counter_cobblestone("down")
+                                    counter_cobblestone()
                                     turtle.digDown()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -139,49 +122,38 @@ function route_mine()
                 --Überprüft, ob nach dem abbauen noch PLatz im Inventar für neue Items ist:
                 inventory_space()
             end
+            y_loop_start = 1--y_loop_start ist wieder 1
+
             --Da die turtle schon an der Höhe angekommen ist, muss sie bei der nächsten runde in die andere Richtung, was Höhe angeht:
             y_direction = y_direction * -1
         end
-        if i_x ~= 1 then
-            --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
-            x_direction = x_direction * -1
-        end
+        
+        z_loop_start = 1--z_loop_start ist wieder 1
     end
 end
-
-function counter_cobblestone(direction_string)
-    if direction_string == "forward" then
-        local block_exists , inspect_block = turtle.inspect()
-    elseif direction_string == "up" then
-        local block_exists , inspect_block = turtle.inspectUp()
-    elseif direction_string == "down" then
-        local block_exists , inspect_block = turtle.inspectDown()
-    end
-
+function counter_cobblestone()
+    local block_exists , inspect_block = turtle.inspect()
     --Zählt wie viel cobble abgebaut wird
-    local block_name = inspect_block.name
-    if block_name ~= nil then
-        if block_name == cobblestone_string then
-            inventar_counter_cobblestone = inventar_counter_cobblestone + 1
+    if inspect_block.name == cobblestone_string then
+        inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
-            if inventar_counter_cobblestone >= maxCobblestone then
-                --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
-                for i_cobble_slot = 1, 16, 1 do
-                    turtle.select(i_cobble_slot)
-                    if turtle.getItemDetail().name == cobblestone_string then
-                        turtle.drop()
-                    end
+        if inventar_counter_cobblestone >= maxCobblestone then
+            --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
+            for i_cobble_slot = 1, 16, 1 do
+                turtle.select(i_cobble_slot)
+                if turtle.getItemDetail().name == cobblestone_string then
+                    turtle.drop()
                 end
             end
         end
     end
 end
 
-function turtle_turn(direction)
-    if direction == 1 then
+function turtle_turn(z_tiefe)
+    if z_tiefe == 16 then
         --turn rechts
         turtle.turnRight()
-    elseif direction == -1 then
+    elseif z_tiefe == 1 then
         --turn links
         turtle.turnLeft()
     end
@@ -221,11 +193,13 @@ function checker_empty_slots()
     end
     return free_slots
 
+
 end
 
 
 
 function chest_place()
+    --TODO für enderchest anpassen + print anpassen
     --Wenn keine Chest im Inventory ist, wird geprintet "Bitte entleeren sie das Inventar" oder so.
 
     local selector_chest = choose_chest()
@@ -247,16 +221,9 @@ function chest_place()
     if comming_from == "back" then
         turtle.turnLeft()
         turtle.turnLeft()
-        if turtle.place() == false then
-            repeat
-                turtle.attack()
-                turtle.dig()
-                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-            until turtle.place() == true
-        end
         turtle.place()
         drop_inventory_chest()
-        
+
         if chest == enderchest_string then
             --If Enderchest, take it with you
             turtle.dig()
@@ -265,13 +232,7 @@ function chest_place()
         turtle.turnRight()
         turtle.turnRight()
     elseif comming_from == "up" then
-        if turtle.placeUp() == false then
-            repeat
-                turtle.attackUp()
-                turtle.digUp()
-                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-            until turtle.placeUp() == true
-        end
+        turtle.placeUp()
 
         if chest == enderchest_string then
             --If Enderchest, take it with you
@@ -279,13 +240,7 @@ function chest_place()
         end
 
     elseif comming_from == "down" then
-        if turtle.placeDown() == false then
-            repeat
-                turtle.attackDown()
-                turtle.digDown()
-                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-            until turtle.placeDown() == true
-        end
+        turtle.placeDown()
         drop_inventory_chest()
 
         if chest == enderchest_string then
