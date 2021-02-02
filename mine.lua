@@ -11,7 +11,7 @@ function set_parameter()
     chest_string = "minecraft:chest"
     enderchest_string = "minecraft:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
-    cobblestone_string = "minecraft:cobblestone"
+    stone_string = "minecraft:stone"
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
 end
@@ -161,14 +161,14 @@ function counter_cobblestone(direction_string)
     end
 
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block.name == cobblestone_string then
+    if inspect_block.name == stone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
             --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
             for i_cobble_slot = 1, 16, 1 do
                 turtle.select(i_cobble_slot)
-                if turtle.getItemDetail().name == cobblestone_string then
+                if turtle.getItemDetail().name == stone_string then
                     turtle.drop()
                 end
             end
@@ -323,16 +323,16 @@ function drop_inventory_chest()
 end
 function choose_chest()
     --If enderchest vorhanden
-    local select_chest = select_item(enderchest_string)[1]
-    if select_chest ~= nil then
+    local select_chest = select_item(enderchest_string)
+    if select_chest[1] ~= nil then
         chest = enderchest_string--Parameter
-        return select_chest
+        return select_chest[1]
     end
     --Else search for normal chest
-        chest = chest_string--Parameter
+    chest = chest_string--Parameter
 
-    select_chest = select_item(chest_string)[1]
-    return select_chest
+    select_chest = select_item(chest_string)
+    return select_chest[1]
 
 end
 
