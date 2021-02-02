@@ -167,16 +167,19 @@ function counter_cobblestone(direction_string)
 
         if inventar_counter_cobblestone >= maxCobblestone then
             --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
-            for i_cobble_slot = 1, 16, 1 do
-                turtle.select(i_cobble_slot)
-                local item_detail = turtle.getItemDetail()
-                if item_detail ~= nil then
-                    if item_detail.name == cobblestone_string then
-                        turtle.drop()
-                    end
-                end
-            end
+            drop_cobblestone()
             inventar_counter_cobblestone = 0
+        end
+    end
+end
+function drop_cobblestone()
+    for i_cobble_slot = 1, 16, 1 do
+        turtle.select(i_cobble_slot)
+        local item_detail = turtle.getItemDetail()
+        if item_detail ~= nil then
+            if item_detail.name == cobblestone_string then
+                turtle.drop()
+            end
         end
     end
 end
@@ -245,6 +248,10 @@ function chest_place()
         selector_chest = choose_chest()
 
     end
+
+    --first drop all cobblestone:
+    drop_cobblestone()
+
     --Selects the Chest:
     turtle.select(selector_chest)
     
