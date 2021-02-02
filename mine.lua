@@ -9,7 +9,7 @@ function set_parameter()
     maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
     chest_string = "minecraft:chest"
-    enderchest_string = "minecraft:ender_storage"
+    enderchest_string = "enderstorage:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
     maxCobblestone = 64--Frei Konfigurierbar
