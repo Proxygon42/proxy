@@ -168,8 +168,11 @@ function counter_cobblestone(direction_string)
             --Wenn 64 cobble aufgesammelt wurde, wird alles an cobble im Inventar gedroppt
             for i_cobble_slot = 1, 16, 1 do
                 turtle.select(i_cobble_slot)
-                if turtle.getItemDetail().name == stone_string then
-                    turtle.drop()
+                local item_detail = turtle.getItemDetail()
+                if item_detail ~= nil then
+                    if item_detail.name == stone_string then
+                        turtle.drop()
+                    end
                 end
             end
         end
