@@ -176,6 +176,7 @@ function counter_cobblestone(direction_string)
                     end
                 end
             end
+            inventar_counter_cobblestone == 0
         end
     end
 end
