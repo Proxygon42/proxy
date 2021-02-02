@@ -12,6 +12,7 @@ function set_parameter()
     enderchest_string = "enderstorage:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
+    cobblestone_string = "minecraft:cobblestone"
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
 end
@@ -170,7 +171,7 @@ function counter_cobblestone(direction_string)
                 turtle.select(i_cobble_slot)
                 local item_detail = turtle.getItemDetail()
                 if item_detail ~= nil then
-                    if item_detail.name == stone_string then
+                    if item_detail.name == cobblestone_string then
                         turtle.drop()
                     end
                 end
