@@ -162,7 +162,7 @@ function counter_cobblestone(direction_string)
     end
 
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block.name == stone_string then
+    if inspect_block.name == stone_string or inspect_block.name == cobblestone_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
