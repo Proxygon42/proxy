@@ -1,5 +1,8 @@
 ---!!!FUNCTIONS:!!!---
 
+--TODO:
+--maybe make a function for more kind of chest options
+
 ---PARAMETER:---
 function set_parameter()
     fuel_value = 80--Kohle Value
@@ -330,7 +333,7 @@ function drop_inventory_chest()
         turtle.select(i)
         local selected_item = turtle.getItemDetail(i)
         if selected_item ~= nil then
-            if selected_item.name ~= coal_string and selected_item.name ~= chest_string then
+            if selected_item.name ~= coal_string and (selected_item.name ~= chest_string or selected_item.name ~= chest_maple_string) then
                 --Wenn das Item keine Kohle und keine Chest ist, wird gedroppt
                 if comming_from == "back" then
                     turtle.drop()
@@ -351,7 +354,6 @@ function choose_chest()
         return select_chest[1]
     end
     --Else search for normal chest
-    chest = chest_string--Parameter
 
     select_chest = select_item(chest_string)
     if select_chest[1] ~= nil then
