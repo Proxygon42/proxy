@@ -9,6 +9,7 @@ function set_parameter()
     maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
     chest_string = "minecraft:chest"
+    chest_maple_string = "autumnity:maple_chest"
     enderchest_string = "enderstorage:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
@@ -19,6 +20,11 @@ end
 
 ---DIALOG:---
 function input_dialog()
+    --Mining oder building?
+    print("1.Mine or 2.build?")
+    a_mode = tonumber(dialog_einzelne_xyz_eingabe(":"))
+    
+    
     --Wie tief,Breit,Hoch das zu minende Gebiet vor der Turtle
     print("Bitte geben Sie folgende Daten ein..")
     x_xyz = tonumber(dialog_einzelne_xyz_eingabe("Breite"))
@@ -103,6 +109,7 @@ function route_mine()
                             end
                             sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                         until turtle.forward() == true
+
                     end
                     comming_from = "back"
                 else
@@ -119,6 +126,7 @@ function route_mine()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.up() == true
+
                         end
                         comming_from = "down"
                     elseif y_direction == -1 then
@@ -133,6 +141,7 @@ function route_mine()
                                 end
                                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                             until turtle.down() == true
+                            
                         end
                         comming_from = "up"
                     end
@@ -345,6 +354,14 @@ function choose_chest()
     chest = chest_string--Parameter
 
     select_chest = select_item(chest_string)
+    if select_chest[1] ~= nil then
+        chest = chest_string--Parameter
+        return select_chest[1]
+    end
+    
+    chest = chest_maple_string--Parameter
+    select_chest = select_item(chest_maple_string)
+    
     return select_chest[1]
 
 end

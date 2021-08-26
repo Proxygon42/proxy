@@ -1,0 +1,5 @@
+local x, y, z = gps.locate()
+fs.open("gps_start_xyz", "w")
+fs.writeLine(x)
+fs.writeLine(y)
+fs.writeLine(z)
