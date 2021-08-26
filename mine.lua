@@ -17,6 +17,7 @@ function set_parameter()
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
     cobblestone_string = "minecraft:cobblestone"
+    cobblestone_deepslate_string = "minecraft:cobbled_deepslate"
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
 end
@@ -174,7 +175,7 @@ function counter_cobblestone(direction_string)
     end
 
     --Zählt wie viel cobble abgebaut wird
-    if inspect_block.name == stone_string or inspect_block.name == cobblestone_string then
+    if inspect_block.name == stone_string or inspect_block.name == cobblestone_string or inspect_block.name == cobblestone_deepslate_string then
         inventar_counter_cobblestone = inventar_counter_cobblestone + 1
 
         if inventar_counter_cobblestone >= maxCobblestone then
@@ -189,7 +190,7 @@ function drop_cobblestone()
         turtle.select(i_cobble_slot)
         local item_detail = turtle.getItemDetail()
         if item_detail ~= nil then
-            if item_detail.name == cobblestone_string then
+            if item_detail.name == cobblestone_string or item_detail.name == cobblestone_deepslate_string then
                 turtle.drop()
             end
         end
@@ -333,7 +334,7 @@ function drop_inventory_chest()
         turtle.select(i)
         local selected_item = turtle.getItemDetail(i)
         if selected_item ~= nil then
-            if selected_item.name ~= coal_string and (selected_item.name ~= chest_string or selected_item.name ~= chest_maple_string) then
+            if selected_item.name ~= coal_string and selected_item.name ~= chest_string and selected_item.name ~= chest_maple_string then
                 --Wenn das Item keine Kohle und keine Chest ist, wird gedroppt
                 if comming_from == "back" then
                     turtle.drop()
