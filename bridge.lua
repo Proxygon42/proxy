@@ -59,6 +59,7 @@ function build()
             print("searching for blocks...")
             select_block = select_item(polished_deepslate_str)
             turtle.select(select_block[1])
+            block_detail_table = turtle.getItemDetail()
         end
         if a_mode == 1 then
             --Bridge
