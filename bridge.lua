@@ -99,6 +99,10 @@ function select_item(item)
     return slot_table
 end
 
+function github_update()
+    shell.run("proxy/update.lua")
+end
+
 ---!!!Start:!!!---
 github_update()
 input_dialog()
