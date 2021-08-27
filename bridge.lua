@@ -60,23 +60,23 @@ function build()
         end
         if a_mode == 1 then
             --Tower
-            if turtle.placeDown() == false then
-                repeat
-                    turtle.attackDown()
-                    turtle.digDown()
-                    sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-                until turtle.placeDown() == true
-            end
-            turtle.place()
-            turtle.up()
-        else
-            --Bridge
             if turtle.place() == false then
                 repeat
                     turtle.attack()
                     turtle.dig()
                     sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
                 until turtle.place() == true
+            end
+            turtle.place()
+            turtle.up()
+        else
+            --Bridge
+            if turtle.placeDown() == false then
+                repeat
+                    turtle.attackDown()
+                    turtle.digDown()
+                    sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                until turtle.placeDown() == true
             end
             turtle.placeDown()
             turtle.forward()
