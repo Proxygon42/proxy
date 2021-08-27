@@ -53,7 +53,7 @@ function build()
     local i = 0
     while i <= y_xyz do
         i = i + 1
-        local block_detail_table = turtle.getItemDetail
+        local block_detail_table = turtle.getItemDetail()
         while block_detail_table.name ~= polished_deepslate_str do
             print("searching for blocks...")
             turtle.select(select_block[1])
