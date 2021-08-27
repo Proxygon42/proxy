@@ -53,13 +53,20 @@ function build()
     local i = 0
     while i <= y_xyz do
         i = i + 1
+        local block_found = false
         local block_detail_table = turtle.getItemDetail()
-
-        while block_detail_table.name ~= polished_deepslate_str do
+        while block_detail_table == nil or block_found == false do
             print("searching for blocks...")
             select_block = select_item(polished_deepslate_str)
             turtle.select(select_block[1])
             block_detail_table = turtle.getItemDetail()
+            
+            if block_detail_table ~= nil then
+                if block_detail_table.name == polished_deepslate_str then
+                    block_found = true
+                end
+            end
+            
         end
         if a_mode == 1 then
             --Bridge
