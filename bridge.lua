@@ -24,7 +24,7 @@ function input_dialog()
     --Mining oder building?
     a_mode = 0
     print("1.Bridge or 2.Tower?")
-    while a_mode ~= 1 or a_mode ~= 2 do
+    while a_mode ~= 1 and a_mode ~= 2 do
         a_mode = tonumber(dialog_einzelne_xyz_eingabe(":"))
     end
     
