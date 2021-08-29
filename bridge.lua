@@ -50,7 +50,7 @@ end
 
 function build()
     select_block = select_item(polished_deepslate_str)
-    local i = 0
+    local i = 1
     while i <= y_xyz do
         i = i + 1
         local block_found = false
@@ -60,7 +60,7 @@ function build()
             select_block = select_item(polished_deepslate_str)
             turtle.select(select_block[1])
             block_detail_table = turtle.getItemDetail()
-            
+            --This is disgusting...but might work.
             if block_detail_table ~= nil then
                 if block_detail_table.name == polished_deepslate_str then
                     block_found = true
