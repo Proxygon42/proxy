@@ -61,68 +61,102 @@ function build()
     --select_block = select_item(polished_deepslate_str)
 
     directions_setup()--I forgot what it does, but it does sth important I think.
-
-    for i_x = 1 , x_xyz , 1 do
+    for i_y = 1 , y_xyz , 1 do
         
 
-        for i_z = 1 , z_xyz , 1 do
-            --Die Tiefe, welche z ist, bestimmt wie weit eine Reihe gegangen wird.
-            if i_x ~= 1 then
-                if i_z == 1 or i_z == 2 then
-                    --Erste Spalte der Reihe, welche nicht die erste ist, benötigt eine weitere Drehung, weil sich gerade erst in die Reihe von der Seite bewegt worden ist.
-                    turtle_turn(x_direction)
-                end
-            end
+        for i_x = 1 , x_xyz , 1 do
+            
 
-            if y_xyz < 0 then
-                y_forloop = math.abs(y_xyz) + 1
-            else
-                y_forloop = y_xyz
-            end
-
-            local block_found = false
-            local block_detail_table = turtle.getItemDetail()
-            while block_detail_table == nil or block_found == false do
-                print("searching for blocks...")
-                select_block = select_item(polished_deepslate_str)
-                turtle.select(select_block[1])
-                block_detail_table = turtle.getItemDetail()
-                --This is disgusting...but might work.
-                if block_detail_table ~= nil then
-                    if block_detail_table.name == polished_deepslate_str then
-                        block_found = true
+            for i_z = 1 , z_xyz , 1 do
+                --Die Tiefe, welche z ist, bestimmt wie weit eine Reihe gegangen wird.
+                if i_x ~= 1 then
+                    if i_z == 1 or i_z == 2 then
+                        --Erste Spalte der Reihe, welche nicht die erste ist, benötigt eine weitere Drehung, weil sich gerade erst in die Reihe von der Seite bewegt worden ist.
+                        turtle_turn(x_direction)
                     end
                 end
-                
-            end
 
-            --Forward:
-            if turtle.forward() == false then
+                if y_xyz < 0 then
+                    y_forloop = math.abs(y_xyz) + 1
+                else
+                    y_forloop = y_xyz
+                end
+
+                local block_found = false
+                local block_detail_table = turtle.getItemDetail()
+                while block_detail_table == nil or block_found == false do
+                    print("searching for blocks...")
+                    select_block = select_item(polished_deepslate_str)
+                    turtle.select(select_block[1])
+                    block_detail_table = turtle.getItemDetail()
+                    --This is disgusting...but might work.
+                    if block_detail_table ~= nil then
+                        if block_detail_table.name == polished_deepslate_str then
+                            block_found = true
+                        end
+                    end
+                    
+                end
+
+                --Forward:
+                if turtle.forward() == false then
+                    repeat
+                        turtle.attack()
+                        if turtle.detect() == true then
+                            scan("forward")
+                            turtle.dig()
+                        end
+                        sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                    until turtle.forward() == true
+                end
+
+                --Place:
+                if turtle.placeDown() == false then
+                    repeat
+                        turtle.attackDown()
+                        turtle.digDown()
+                        sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+                    until turtle.placeDown() == true
+                end
+                turtle.placeDown()
+                turtle.forward()
+                
+                if i_z ~= 1 then
+                    --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
+                    x_direction = x_direction * -1
+                end
+            end
+        end
+        if y_direction == 1 then
+            --Hoch:
+            --Gravel-Schutz Script:
+            if turtle.up() == false then
                 repeat
-                    turtle.attack()
-                    if turtle.detect() == true then
-                        scan("forward")
-                        turtle.dig()
+                    turtle.attackUp()
+                    if turtle.detectUp() == true then
+                        scan("up")
+                        turtle.digUp()
                     end
                     sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-                until turtle.forward() == true
-            end
+                until turtle.up() == true
 
-            --Place:
-            if turtle.placeDown() == false then
+            end
+            comming_from = "down"
+        elseif y_direction == -1 then
+            --Runter:
+            --Gravel-Schutz Script:
+            if turtle.down() == false then
                 repeat
                     turtle.attackDown()
-                    turtle.digDown()
+                    if turtle.detectDown() == true then
+                        scan("down")
+                        turtle.digDown()
+                    end
                     sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-                until turtle.placeDown() == true
+                until turtle.down() == true
+                
             end
-            turtle.placeDown()
-            turtle.forward()
-            
-            if i_z ~= 1 then
-                --Da die sich turtle schon in diese Richtung gedreht hat, muss sie bei der nächsten runde in die andere Richtung, um nicht im Kreis zu laufen:
-                x_direction = x_direction * -1
-            end
+            comming_from = "up"
         end
     end
 end
