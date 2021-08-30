@@ -31,7 +31,7 @@ function input_dialog()
     a_mode = 0
     print("1.Mine or 2.build?")
     while a_mode ~= 1 and a_mode ~= 2 do
-        a_mode = tonumber(dialog_einzelne_xyz_eingabe())
+        a_mode = tonumber(dialog_einzelne_xyz_eingabe("Modus"))
     end
     
     --Wie tief,Breit,Hoch das zu minende Gebiet vor der Turtle
