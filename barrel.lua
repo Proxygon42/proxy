@@ -1,4 +1,5 @@
 barrel_string = "minecraft:barrel"
+i_infinite_barrel = 1
 
 function barrel()
     turtle.place()
@@ -8,7 +9,9 @@ function barrel()
         local item_detail = turtle.getItemDetail()
         if item_detail ~= nil then
             if item_detail.name == barrel_string then
-                turtle.dropUp(i)
+                i_infinite_barrel = i_barrel
+            else
+                turtle.dropUp(i_barrel)
             end
         end
     end
@@ -22,10 +25,12 @@ while true do
         turtle.select(i)
         local item_detail = turtle.getItemDetail()
         if item_detail ~= nil then
-            if item_detail.name == barrel_string then
+            if i == i_infinite_barrel then
 
                 barrel()
 
+            else
+                turtle.dropUp(i)
             end
         end
     end
