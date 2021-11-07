@@ -19,7 +19,7 @@ function set_parameter()
     turtle.select(1)
     repeat
         local item_detail = turtle.getItemDetail()
-    until item_detail ~= nil
+    until item_detail.name ~= nil
     polished_deepslate_str = item_detail.name
 end
 
