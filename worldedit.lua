@@ -22,7 +22,11 @@ function set_parameter()
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
     saved_blocks_array = {}
-    polished_deepslate_str = "quark:polished_deepslate"
+    turtle.select(1)
+    repeat
+        local item_detail = turtle.getItemDetail()
+    until item_detail ~= nil
+    polished_deepslate_str = item_detail.name
 end
 
 ---DIALOG:---
