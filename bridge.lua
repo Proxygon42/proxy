@@ -12,11 +12,15 @@ function set_parameter()
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
     cobblestone_string = "minecraft:cobblestone"
-    cobblestone_deepslate_string = "minecraft:cobbled_deepslate"
+    cobblestone_deepslate_string = "quark:cobbled_deepslate"
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
     saved_blocks_array = {}
-    polished_deepslate_str = "quark:polished_deepslate"
+    turtle.select(1)
+    repeat
+        local item_detail = turtle.getItemDetail()
+    until item_detail ~= nil
+    polished_deepslate_str = item_detail.name
 end
 
 ---DIALOG:---
