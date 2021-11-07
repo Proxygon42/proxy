@@ -4,7 +4,10 @@ i_infinite_barrel = 1
 function barrel()
     turtle.place()
     turtle.select(1)
-    turtle.suck()
+    repeat
+        turtle.suck()
+    until turtle.suck() == false
+    
     for i_barrel = 1, 16, 1 do
         turtle.select(i_barrel)
         local item_detail = turtle.getItemDetail()
@@ -16,7 +19,7 @@ function barrel()
             end
         end
     end
-    turtle.select(8)
+    turtle.select(9)
     turtle.dig()
 end
 
