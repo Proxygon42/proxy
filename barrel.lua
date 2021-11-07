@@ -23,7 +23,7 @@ function inner_barrel()
                 i_infinite_barrel = i_barrel
                 break
             else
-                turtle.dropUp(i_barrel)
+                turtle.dropDown(i_barrel)
             end
         end
     end
@@ -40,7 +40,7 @@ while true do
                 barrel()
 
             else
-                turtle.dropUp(i)
+                turtle.dropDown(i)
             end
         end
     end
