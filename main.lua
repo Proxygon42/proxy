@@ -16,10 +16,9 @@ function input_dialog()
 end
 
 function ask(question)
-{
     write(question..":")
     return read()
-}
+end
 
 function github_update()
     shell.run("proxy/ci/update.lua")
