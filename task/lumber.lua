@@ -54,7 +54,7 @@ end
 
 
 ---MINING/MOVING:---
-function route_mine()
+function route_lumber()
 
     if  y_xyz > 0 then
         --Die eingegebene Höhe ist positiv und es muss als erste y_direction nach oben gegangen werden

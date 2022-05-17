@@ -1,0 +1,1 @@
+shell.run("proxy/main.lua")
