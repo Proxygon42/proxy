@@ -12,7 +12,7 @@ function set_parameter()
     maxMinFuelAmount = 5000
     coal_string = "minecraft:coal"
     chest_string = "minecraft:chest"
-    chest_maple_string = "autumnity:maple_chest"
+    chest_maple_string = "quark:spruce_chest"
     enderchest_string = "enderstorage:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
