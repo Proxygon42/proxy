@@ -186,7 +186,7 @@ function select_item(item, find_string)
         local item_data = turtle.getItemDetail(i_select)
         if item_data ~= nil then--Diese Abfrage wird benötigt, weil bei einer ".name" abfrage von nil das Programm stirbt
             if find_string == true then
-                if string.find(item_data.name, item) == true
+                if string.find(item_data.name, item) ~= nil then
                     table.insert(slot_table, i_select)
                 end
             elseif item_data.name == item then
