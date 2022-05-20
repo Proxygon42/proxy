@@ -10,9 +10,8 @@ function set_parameter()
     height = 0
     minFuelAmount = 200
     maxMinFuelAmount = 5000
-    coal_string = "minecraft:coal"
-    chest_string = "minecraft:chest"
-    chest_maple_string = "quark:spruce_chest"
+    coal_string = "coal"
+    chest_string = "chest"
     enderchest_string = "enderstorage:ender_storage"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
@@ -180,13 +179,17 @@ function turtle_turn(direction)
     end
 end
 
-function select_item(item)
+function select_item(item, find_string)
     --sucht gibt in einer table alle Slots wieder, wo das Item gefunden wird.
     local slot_table = {}
 	for i_select = 1 , 16 , 1 do
         local item_data = turtle.getItemDetail(i_select)
         if item_data ~= nil then--Diese Abfrage wird benötigt, weil bei einer ".name" abfrage von nil das Programm stirbt
-            if item_data.name == item then
+            if find_string == true then
+                if string.find(item_data.name, item) == true
+                    table.insert(slot_table, i_select)
+                end
+            elseif item_data.name == item then
                 table.insert(slot_table, i_select)
             end
             
@@ -322,21 +325,21 @@ function drop_inventory_chest()
 end
 function choose_chest()
     --If enderchest vorhanden
-    local select_chest = select_item(enderchest_string)
+    local select_chest = select_item(enderchest_string, nil)
     if select_chest[1] ~= nil then
         chest = enderchest_string--Parameter
         return select_chest[1]
     end
     --Else search for normal chest
 
-    select_chest = select_item(chest_string)
+    select_chest = select_item(chest_string, nil)
     if select_chest[1] ~= nil then
         chest = chest_string--Parameter
         return select_chest[1]
     end
     
     chest = chest_maple_string--Parameter
-    select_chest = select_item(chest_maple_string)
+    select_chest = select_item(chest_maple_string, nil)
     
     return select_chest[1]
 
@@ -363,7 +366,7 @@ end
 
 function turtle_refuel()
     --Fueled + gibt den Fuel Stand mit, wenn es tanken konnte und nil, wenn nicht
-    local coal_slot = select_item(coal_string)
+    local coal_slot = select_item(coal_string, true)
     if coal_slot[1] ~= nil then
         --Wenn Kohle gefunden wurde
         local i_checker_fuel = 1
