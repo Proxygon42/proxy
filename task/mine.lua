@@ -310,7 +310,7 @@ function drop_inventory_chest()
         turtle.select(i)
         local selected_item = turtle.getItemDetail(i)
         if selected_item ~= nil then
-            if selected_item.name ~= coal_string and selected_item.name ~= chest_string and selected_item.name ~= chest_maple_string then
+            if selected_item.name ~= coal_string and string.find(selected_item.name, chest_string) == nil then
                 --Wenn das Item keine Kohle und keine Chest ist, wird gedroppt
                 if comming_from == "back" then
                     turtle.drop()
@@ -332,16 +332,11 @@ function choose_chest()
     end
     --Else search for normal chest
 
-    select_chest = select_item(chest_string, nil)
+    select_chest = select_item(chest_string, true)
     if select_chest[1] ~= nil then
         chest = chest_string--Parameter
         return select_chest[1]
     end
-    
-    chest = chest_maple_string--Parameter
-    select_chest = select_item(chest_maple_string, nil)
-    
-    return select_chest[1]
 
 end
 
