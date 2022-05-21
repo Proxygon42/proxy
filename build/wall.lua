@@ -15,7 +15,6 @@ function set_parameter()
     maxCobblestone = 64--Frei Konfigurierbar
     inventar_counter_cobblestone = 0
     saved_blocks_array = {}
-    turtle.select(1)
     polished_deepslate_str = item_detail.name
     --building_block_obj wird in input dialog gesetzt
 end
@@ -51,50 +50,34 @@ end
 function build()
     --Startet über den ersten zu platzierenden Block
     select_block = select_item(building_block_objs.name)
-    local i = 1
-    while i <= heigth do
-        i = i + 1
-        --TODO MUST!!
+    local i_height = 1
+    local i_length = 1
+    while i_height <= height do
+        --Durchgänge der Ebenen
+        i_height = i_height + 1
 
-
-        while block_detail_table == nil or block_found == false do
-            print("searching for blocks...")
-            select_block = select_item(polished_deepslate_str)
-            turtle.select(select_block[1])
-            block_detail_table = turtle.getItemDetail()
-            --This is disgusting...but might work.
-            if block_detail_table ~= nil then
-                if block_detail_table.name == polished_deepslate_str then
-                    block_found = true
-                end
-            end
-            
+        if i_height > 1 then
+            --Die Turtle dreht sich um, um die Reihe in die andere Richtung nochmal zu platzieren.
+            --Diesmal eine Ebene höher.
+            turtle.turnLeft()
+            turtle.turnLeft()
         end
-        if a_mode == 1 then
-            --Bridge
-            if turtle.placeDown() == false then
-                repeat
-                    turtle.attackDown()
-                    turtle.digDown()
-                    sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-                until turtle.placeDown() == true
+
+        while i_length <= length do
+            --Durchgänge an einzelnen Blocklängen
+            i_length = i_length + 1
+
+            check_and_select_building_block()
+            force_place("down")
+
+            if i_length ~= length then
+                --Ende der Reihe noch nicht erreicht..
+                force_move("forward")
             end
-            turtle.placeDown()
-            turtle.forward()
-        else
-            --Tower
-            if turtle.place() == false then
-                repeat
-                    turtle.attack()
-                    turtle.dig()
-                    sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
-                until turtle.place() == true
-            end
-            turtle.place()
-            turtle.up()
-            
+
         end
     end
+    
 end
 
 function select_item(item, find_string)
@@ -116,9 +99,60 @@ function select_item(item, find_string)
     return slot_table
 end
 
+function check_and_select_building_block()
+    if turtle.getItemDetail(select_block[1]) == nil then
+        --Kein Item im Slot
+        local i_repeat_select = 1
+        repeat
+            select_block = select_item(building_block_objs.name)
+            i_repeat_select = i_repeat_select + 1
+
+            if i_repeat_select == 16 and select_block ~= nil then
+                print("Folgender Block fehlt:")
+                print(building_block_objs.name)
+                print("Drücke zum fortfahren ENTER")
+        until select_block ~= nil
+    end
+end
 function start_position()
     force_move("up")
     force_move("forward")
+end
+
+function force_place(direction)
+    if direction == "infront" then
+
+        if turtle.place() == false then
+            repeat
+                turtle.attack()
+                turtle.dig()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.place() == true
+        end
+        --TODO:TEST: Delete if placement happened turtle.place()
+        --if not, upodate elseif below. It will be needed there
+
+    elseif direction == "up" then
+
+        if turtle.placeUp() == false then
+            repeat
+                turtle.attackUp()
+                turtle.digUp()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.placeUp() == true
+        end
+
+    elseif direction == "down" then
+
+        if turtle.placeDown() == false then
+            repeat
+                turtle.attackDown()
+                turtle.digDown()
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.placeDown() == true
+        end
+
+    end
 end
 
 function force_move(direction)
