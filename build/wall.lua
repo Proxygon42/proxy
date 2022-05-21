@@ -16,19 +16,20 @@ function set_parameter()
     inventar_counter_cobblestone = 0
     saved_blocks_array = {}
     turtle.select(1)
-    repeat
-        local item_detail = turtle.getItemDetail()
-    until item_detail.name ~= nil
     polished_deepslate_str = item_detail.name
+    --building_block_obj wird in input dialog gesetzt
 end
 
 ---DIALOG:---
 function input_dialog()
-    print("Platzieren Sie den Baublock im ersten Slot und drücken Sie danach ENTER")
-    read()
-    turtle.select(1)
-    if turtle.inspect
-
+    repeat
+        print("Platzieren Sie den Baublock im ersten Slot und drücken Sie danach ENTER")
+        read()
+        building_block_obj = turtle.getItemDetail(1)
+    until building_block_obj ~= nil
+    print("Bitte geben Sie folgende Daten ein..")
+    length = tonumber(dialog_einzelne_xyz_eingabe("Länge"))
+    heigth = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
 end
 
 function dialog_einzelne_xyz_eingabe(xyz_string)
@@ -48,12 +49,14 @@ function dialog_einzelne_xyz_eingabe(xyz_string)
 end
 
 function build()
-    select_block = select_item(block_string)
+    --Startet über den ersten zu platzierenden Block
+    select_block = select_item(building_block_objs.name)
     local i = 1
-    while i <= y_xyz do
+    while i <= heigth do
         i = i + 1
-        local block_found = false
-        local block_detail_table = turtle.getItemDetail()
+        --TODO MUST!!
+
+
         while block_detail_table == nil or block_found == false do
             print("searching for blocks...")
             select_block = select_item(polished_deepslate_str)
@@ -113,6 +116,63 @@ function select_item(item, find_string)
     return slot_table
 end
 
+function start_position()
+    force_move("up")
+    force_move("forward")
+end
+
+function force_move(direction)
+    if direction == "up" then
+        --Gravel-Schutz Script:
+        if turtle.up() == false then
+            repeat
+                turtle.attackUp()
+                if turtle.detectUp() == true then
+                    counter_cobblestone("up")
+                    turtle.digUp()
+                end
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.up() == true
+
+        end
+        comming_from = "down"
+
+    elseif direction == "down"
+        --Runter:
+        --Gravel-Schutz Script:
+        if turtle.down() == false then
+            repeat
+                turtle.attackDown()
+                if turtle.detectDown() == true then
+                    counter_cobblestone("down")
+                    turtle.digDown()
+                end
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.down() == true
+            
+        end
+        comming_from = "up"
+
+    elseif direction == "forward" then
+        --Gravel-Schutz Script:
+        if turtle.forward() == false then
+            repeat
+                turtle.attack()
+                if turtle.detect() == true then
+                    counter_cobblestone("forward")
+                    turtle.dig()
+                end
+                sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
+            until turtle.forward() == true
+
+        end
+        comming_from = "back"
+
+    else
+        print("ERROR: False force move string.")
+    end
+end
+
 function github_update()
     shell.run("proxy/update.lua")
 end
@@ -121,5 +181,6 @@ end
 github_update()
 input_dialog()
 set_parameter()
+start_position()
 build()
 print("Done!")
