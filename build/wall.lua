@@ -24,17 +24,13 @@ end
 
 ---DIALOG:---
 function input_dialog()
-    --Mining oder building?
-    a_mode = 0
-    print("1.Bridge or 2.Tower?")
-    while a_mode ~= 1 and a_mode ~= 2 do
-        a_mode = tonumber(dialog_einzelne_xyz_eingabe(":"))
-    end
-    
-    --Wie tief,Breit,Hoch das zu minende Gebiet vor der Turtle
-    print("Bitte geben Sie folgende Daten ein..")
-    y_xyz = tonumber(dialog_einzelne_xyz_eingabe("Länge/Höhe"))
+    print("Platzieren Sie den Baublock im ersten Slot und drücken Sie danach ENTER")
+    read()
+    turtle.select(1)
+    if turtle.inspect
+
 end
+
 function dialog_einzelne_xyz_eingabe(xyz_string)
     local xyz = nil
     while tonumber(xyz) == nil or tonumber(xyz) == 0 do
@@ -52,7 +48,7 @@ function dialog_einzelne_xyz_eingabe(xyz_string)
 end
 
 function build()
-    select_block = select_item(polished_deepslate_str)
+    select_block = select_item(block_string)
     local i = 1
     while i <= y_xyz do
         i = i + 1
