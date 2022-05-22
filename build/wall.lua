@@ -2,7 +2,6 @@
 function set_parameter()
     fuel_value = 80--Kohle Value
     maxFuel = turtle.getFuelLimit()--20.000 Bei normalen Turtles
-    height = 0
     minFuelAmount = 200
     maxMinFuelAmount = 5000
     coal_string = "coal"
@@ -113,6 +112,7 @@ function start_position()
 end
 
 function force_place(direction)
+
     if direction == "infront" then
 
         if turtle.place() == false then
@@ -122,8 +122,7 @@ function force_place(direction)
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
             until turtle.place() == true
         end
-        --TODO:TEST: Delete if placement happened turtle.place()
-        --if not, upodate elseif below. It will be needed there
+        turtle.place()
 
     elseif direction == "up" then
 
@@ -134,6 +133,7 @@ function force_place(direction)
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
             until turtle.placeUp() == true
         end
+        turtle.placeUp()
 
     elseif direction == "down" then
 
@@ -144,6 +144,7 @@ function force_place(direction)
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
             until turtle.placeDown() == true
         end
+        turtle.placeDown()
 
     end
 end
