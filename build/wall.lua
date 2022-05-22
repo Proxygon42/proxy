@@ -158,7 +158,6 @@ function force_move(direction)
             repeat
                 turtle.attackUp()
                 if turtle.detectUp() == true then
-                    counter_cobblestone("up")
                     turtle.digUp()
                 end
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -174,7 +173,6 @@ function force_move(direction)
             repeat
                 turtle.attackDown()
                 if turtle.detectDown() == true then
-                    counter_cobblestone("down")
                     turtle.digDown()
                 end
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
@@ -189,7 +187,6 @@ function force_move(direction)
             repeat
                 turtle.attack()
                 if turtle.detect() == true then
-                    counter_cobblestone("forward")
                     turtle.dig()
                 end
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
