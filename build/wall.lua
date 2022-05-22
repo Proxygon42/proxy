@@ -97,12 +97,12 @@ function check_and_select_building_block()
         --Kein Item im Slot
         local i_repeat_select = 1
         repeat
-            select_block = select_item(building_block_objs.name)
+            select_block = select_item(building_block_obj.name)
             i_repeat_select = i_repeat_select + 1
 
             if i_repeat_select == 16 and select_block ~= nil then
                 print("Folgender Block fehlt:")
-                print(building_block_objs.name)
+                print(building_block_obj.name)
                 print("Drücke zum fortfahren ENTER")
             end
         until select_block ~= nil
@@ -209,8 +209,8 @@ end
 
 ---!!!Start:!!!---
 github_update()
-input_dialog()
 set_parameter()
+input_dialog()
 start_position()
 build()
 print("Done!")

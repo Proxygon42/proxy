@@ -20,7 +20,7 @@ function input_dialog()
     print("Bitte geben Sie folgende Daten ein..")
     depth = tonumber(dialog_einzelne_xyz_eingabe("Tiefe"))
     height = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
-    width = tonumber(dialog_einzelne_xyz_eingabe("Breite nach rechts)"))
+    width = tonumber(dialog_einzelne_xyz_eingabe("Breite nach rechts"))
 end
 
 function dialog_einzelne_xyz_eingabe(xyz_string)
@@ -58,12 +58,13 @@ function build()
             --4 Durchgänge für 4 Seiten
             i_frame = i_frame + 1
             
-            if number % 2 == 0 then --if even
+            local length = 0
+            if i_frame % 2 == 0 then --if even
                 --Tiefe (erster Durchgange)
-                local length = depth
+                length = depth
             else
                 --Breite (zweiter Durchgang)
-                local length = width
+                length = width
             end
 
             local i_length = 1
@@ -71,11 +72,15 @@ function build()
             while i_length <= length do
                 --Durchgänge an einzelnen Blocklängen
                 i_length = i_length + 1
-
-                if i_frame <= 4 or i_length <= length then
-                    --Platziert kein Block unter sich, wenn es den Rahmen schließt.
-                    check_and_select_building_block()
-                    force_place("down")
+                if i_length > 2 and i_frame > 2 then
+                    --Platziert nur ein Block, wenn es nicht der erste von einem zweiten Seiten-Anfang ist, wo schon ein Block drunter sein sollte.
+                    if i_frame <= 4 or i_length <= length then
+                        --Platziert kein Block unter sich, wenn es den Rahmen schließt.
+                        check_and_select_building_block()
+                        force_place("down")    
+                    end
+                end
+                
                 end
                 if i_length <= length then--Falls es gedanklich keinen Sinn ergibt, vergesse nicht den Zähler ein paar Zeilen drüber
                     --Ende der Reihe noch nicht erreicht..
@@ -117,12 +122,12 @@ function check_and_select_building_block()
         --Kein Item im Slot
         local i_repeat_select = 1
         repeat
-            select_block = select_item(building_block_objs.name)
+            select_block = select_item(building_block_obj.name)
             i_repeat_select = i_repeat_select + 1
 
             if i_repeat_select == 16 and select_block ~= nil then
                 print("Folgender Block fehlt:")
-                print(building_block_objs.name)
+                print(building_block_obj.name)
                 print("Drücke zum fortfahren ENTER")
             end
         until select_block ~= nil
@@ -229,8 +234,8 @@ end
 
 ---!!!Start:!!!---
 github_update()
-input_dialog()
 set_parameter()
+input_dialog()
 start_position()
 build()
 print("Done!")
