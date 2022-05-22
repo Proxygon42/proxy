@@ -72,7 +72,7 @@ function build()
             while i_length <= length do
                 --Durchgänge an einzelnen Blocklängen
                 i_length = i_length + 1
-                if i_length > 2 and i_frame > 2 then
+                if i_length ~= 2 or i_frame == 2 then
                     --Platziert nur ein Block, wenn es nicht der erste von einem zweiten Seiten-Anfang ist, wo schon ein Block drunter sein sollte.
                     if i_frame <= 4 or i_length <= length then
                         --Platziert kein Block unter sich, wenn es den Rahmen schließt.
@@ -81,7 +81,6 @@ function build()
                     end
                 end
                 
-                end
                 if i_length <= length then--Falls es gedanklich keinen Sinn ergibt, vergesse nicht den Zähler ein paar Zeilen drüber
                     --Ende der Reihe noch nicht erreicht..
                     force_move("forward")
@@ -95,7 +94,6 @@ function build()
 
         end
     end
-    
 end
 
 function select_item(item, find_string)
@@ -122,14 +120,9 @@ function check_and_select_building_block()
         --Kein Item im Slot
         local i_repeat_select = 1
         repeat
+            print("Suche nach folgenden Block:")
+            print(building_block_obj.name)
             select_block = select_item(building_block_obj.name)
-            i_repeat_select = i_repeat_select + 1
-
-            if i_repeat_select == 16 and select_block ~= nil then
-                print("Folgender Block fehlt:")
-                print(building_block_obj.name)
-                print("Drücke zum fortfahren ENTER")
-            end
         until select_block ~= nil
     end
 end
