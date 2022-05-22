@@ -272,6 +272,7 @@ function chest_place()
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
             until turtle.placeUp() == true
         end
+        turtle.placeUp()
         drop_inventory_chest()
 
         if chest == enderchest_string then
@@ -287,6 +288,7 @@ function chest_place()
                 sleep(0.25)  -- small sleep to allow for gravel/sand to fall.
             until turtle.placeDown() == true
         end
+        turtle.placeDown()
         drop_inventory_chest()
 
         if chest == enderchest_string then
