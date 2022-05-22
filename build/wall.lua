@@ -41,19 +41,21 @@ end
 function build()
     --Startet über den ersten zu platzierenden Block
     select_block = select_item(building_block_obj.name)
+
     local i_height = 1
-    local i_length = 1
     while i_height <= height do
+
         --Durchgänge der Ebenen
         i_height = i_height + 1
-
-        if i_height > 1 then
+        if i_height > 2 then--Falls es gedanklich keinen Sinn ergibt, vergesse nicht den Zähler ein paar Zeilen drüber
             --Die Turtle dreht sich um, um die Reihe in die andere Richtung nochmal zu platzieren.
             --Diesmal eine Ebene höher.
+            force_move("up")
             turtle.turnLeft()
             turtle.turnLeft()
         end
 
+        local i_length = 1
         while i_length <= length do
             --Durchgänge an einzelnen Blocklängen
             i_length = i_length + 1
@@ -61,7 +63,7 @@ function build()
             check_and_select_building_block()
             force_place("down")
 
-            if i_length ~= length then
+            if i_length <= length then--Falls es gedanklich keinen Sinn ergibt, vergesse nicht den Zähler ein paar Zeilen drüber
                 --Ende der Reihe noch nicht erreicht..
                 force_move("forward")
             end
