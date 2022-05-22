@@ -91,21 +91,15 @@ function select_item(item, find_string)
     end
     return slot_table
 end
-
 function check_and_select_building_block()
     if turtle.getItemDetail(select_block[1]) == nil then
         --Kein Item im Slot
-        local i_repeat_select = 1
         repeat
-            select_block = select_item(building_block_obj.name)
-            i_repeat_select = i_repeat_select + 1
-
-            if i_repeat_select == 16 and select_block ~= nil then
-                print("Folgender Block fehlt:")
-                print(building_block_obj.name)
-                print("Drücke zum fortfahren ENTER")
-            end
+            print("Suche nach folgenden Block:")
+            print(building_block_obj.name)
+            select_block = select_item(building_block_obj.name, nil)
         until select_block ~= nil
+        turtle.select(select_block[1])
     end
 end
 function start_position()

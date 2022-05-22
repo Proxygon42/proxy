@@ -118,12 +118,12 @@ end
 function check_and_select_building_block()
     if turtle.getItemDetail(select_block[1]) == nil then
         --Kein Item im Slot
-        local i_repeat_select = 1
         repeat
             print("Suche nach folgenden Block:")
             print(building_block_obj.name)
-            select_block = select_item(building_block_obj.name)
+            select_block = select_item(building_block_obj.name, nil)
         until select_block ~= nil
+        turtle.select(select_block[1])
     end
 end
 function start_position()
