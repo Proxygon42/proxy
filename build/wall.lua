@@ -8,14 +8,6 @@ function set_parameter()
     coal_string = "coal"
     chest_string = "chest"
     enderchest_string = "enderstorage:ender_storage"
-    comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
-    stone_string = "minecraft:stone"
-    cobblestone_string = "minecraft:cobblestone"
-    cobblestone_deepslate_string = "quark:cobbled_deepslate"
-    maxCobblestone = 64--Frei Konfigurierbar
-    inventar_counter_cobblestone = 0
-    saved_blocks_array = {}
-    polished_deepslate_str = item_detail.name
     --building_block_obj wird in input dialog gesetzt
 end
 
@@ -28,7 +20,7 @@ function input_dialog()
     until building_block_obj ~= nil
     print("Bitte geben Sie folgende Daten ein..")
     length = tonumber(dialog_einzelne_xyz_eingabe("Länge"))
-    heigth = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
+    height = tonumber(dialog_einzelne_xyz_eingabe("Höhe"))
 end
 
 function dialog_einzelne_xyz_eingabe(xyz_string)
@@ -49,7 +41,7 @@ end
 
 function build()
     --Startet über den ersten zu platzierenden Block
-    select_block = select_item(building_block_objs.name)
+    select_block = select_item(building_block_obj.name)
     local i_height = 1
     local i_length = 1
     while i_height <= height do
@@ -87,7 +79,7 @@ function select_item(item, find_string)
         local item_data = turtle.getItemDetail(i_select)
         if item_data ~= nil then--Diese Abfrage wird benötigt, weil bei einer ".name" abfrage von nil das Programm stirbt
             if find_string == true then
-                if string.find(item_data.name, item) == true
+                if string.find(item_data.name, item) == true then
                     table.insert(slot_table, i_select)
                 end
             elseif item_data.name == item then
@@ -111,6 +103,7 @@ function check_and_select_building_block()
                 print("Folgender Block fehlt:")
                 print(building_block_objs.name)
                 print("Drücke zum fortfahren ENTER")
+            end
         until select_block ~= nil
     end
 end
@@ -171,7 +164,7 @@ function force_move(direction)
         end
         comming_from = "down"
 
-    elseif direction == "down"
+    elseif direction == "down" then
         --Runter:
         --Gravel-Schutz Script:
         if turtle.down() == false then
