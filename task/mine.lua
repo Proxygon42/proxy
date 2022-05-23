@@ -12,7 +12,7 @@ function set_parameter()
     maxMinFuelAmount = 5000
     coal_string = "coal"
     chest_string = "chest"
-    enderchest_string = "enderstorage:ender_storage"
+    enderchest_string = "enderstorage:ender_chest"
     comming_from = "back"--Letzte Richtung aus der Die Turtle gekommen ist["back","forward","up","down"]
     stone_string = "minecraft:stone"
     cobblestone_string = "minecraft:cobblestone"
@@ -224,7 +224,7 @@ end
 function chest_place()
     --Wenn keine Chest im Inventory ist, wird geprintet "Bitte entleeren sie das Inventar" oder so.
 
-    local selector_chest = choose_chest()
+    selector_chest, chest = choose_chest()
     while selector_chest == nil do
         print("Das Inventar der turtle ist voll.")
         print("Bitte entleeren sie das Inventar oder geben Sie eine Chest dem Inventar hinzu.")
@@ -243,7 +243,7 @@ function chest_place()
 
     --Selects the Chest:
     turtle.select(selector_chest)
-    
+
     if comming_from == "back" then
         turtle.turnLeft()
         turtle.turnLeft()
@@ -330,14 +330,14 @@ function choose_chest()
     local select_chest = select_item(enderchest_string, nil)
     if select_chest[1] ~= nil then
         chest = enderchest_string--Parameter
-        return select_chest[1]
+        return select_chest[1], chest
     end
     --Else search for normal chest
 
     select_chest = select_item(chest_string, true)
     if select_chest[1] ~= nil then
         chest = chest_string--Parameter
-        return select_chest[1]
+        return select_chest[1], chest
     end
 
 end
