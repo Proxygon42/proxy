@@ -1,0 +1,10 @@
+{
+  [ 16 ] = {
+    name = "Ottomated",
+    balance = 0,
+  },
+  [ 17 ] = {
+    name = "Otto",
+    balance = 0,
+  },
+}
